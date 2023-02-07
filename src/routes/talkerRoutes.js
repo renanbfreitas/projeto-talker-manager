@@ -47,4 +47,21 @@ router.post('/',
   res.status(201).json(newTalker);
 });
 
+router.put('/:id',
+    validateToken,
+    validateName,
+    validateAge,
+    validateTalk,
+    validateWatchedAt,
+    validateRate,
+    async (req, res) => {
+    const { id } = req.params;
+    const talkers = await readTalkers();
+    const talkerIndex = talkers.findIndex((e) => e.id === Number(id));
+    talkers[talkerIndex] = { id: Number(id), ...req.body };
+    await writeTalkers(talkers);
+    const findTalker = talkers.find((e) => e.id === Number(id)); 
+    res.status(200).json(findTalker);
+    });
+
 module.exports = router;
