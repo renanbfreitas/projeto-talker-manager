@@ -64,4 +64,16 @@ router.put('/:id',
     res.status(200).json(findTalker);
     });
 
+    router.delete('/:id', validateToken, async (req, res) => {
+      const { id } = req.params;
+      const talkers = await readTalkers();
+      const talkerIndex = talkers
+        .findIndex((talker) => talker.id === Number(id));
+    
+      talkers.splice(talkerIndex, 1);
+      await writeTalkers(talkers);
+    
+      res.status(204).end();
+    });
+
 module.exports = router;
