@@ -1,8 +1,13 @@
 const express = require('express');
+const validateName = require('../middlewares/validateName');
+const validateRate = require('../middlewares/validateRate');
+const validateAge = require('../middlewares/validateAge');
+const validateTalk = require('../middlewares/validateTalk');
+const validateWatchedAt = require('../middlewares/validateWatchedAt');
+const validateToken = require('../middlewares/validateToken');
+const { readTalkers, writeTalkers } = require('./utils');
 
 const router = express.Router();
-
-const { readTalkers } = require('./utils/index');
 
 router.get('/', async (_req, res) => {
   const talkers = await readTalkers();
@@ -24,6 +29,22 @@ router.get('/:id', async (req, res) => {
   res.status(200).json(talkerById);
 });
 
-module.exports = {
-  router,
+router.post('/',
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  async (req, res) => {
+  const talkers = await readTalkers();
+  const newTalker = {
+  id: talkers.length + 1,
+  ...req.body,
 };
+  const talkerObj = [...talkers, newTalker];
+  await writeTalkers(talkerObj);
+  res.status(201).json(newTalker);
+});
+
+module.exports = router;

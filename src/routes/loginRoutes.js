@@ -10,6 +10,4 @@ loginRouter.post('/', validateLogin, (_req, res) => {
   res.status(200).json(tokenObj);
 });
 
-module.exports = {
-  loginRouter,
-};
+module.exports = loginRouter;

@@ -1,4 +1,4 @@
-module.exports = (req, res, next) => {
+const validateLogin = (req, res, next) => {
     const { email, password } = req.body;
     const validEmail = (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email));
     if (!email) {
@@ -18,3 +18,5 @@ module.exports = (req, res, next) => {
     }
     next();
   };
+
+  module.exports = validateLogin;

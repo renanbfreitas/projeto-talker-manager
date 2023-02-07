@@ -13,9 +13,20 @@ const readTalkers = async () => {
   }
 };
 
+const writeTalkers = async (talker) => {
+  try {
+    const write = await fs
+    .writeFile(path.resolve(__dirname, '../../talker.json'), JSON.stringify(talker));
+    return write;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 const returnToken = () => crypto.randomBytes(8).toString('hex');
 
 module.exports = {
   readTalkers,
+  writeTalkers,
   returnToken,
 };
